@@ -1,0 +1,162 @@
+# Development Guide
+
+This document describes the development process and code standards for the fBit project showcase (`fbit-dev`), a Next.js site that presents fBit projects.
+
+## Development Setup
+
+### Prerequisites
+
+- Node.js 20.9 or newer and npm
+- Git
+
+### Initial Setup
+
+1. **Clone the repository:**
+```bash
+git clone https://github.com/fbit-solutions/fbit-dev.git
+cd fbit-dev
+```
+
+2. **Install dependencies:**
+```bash
+npm install
+```
+
+3. **Start the dev server:**
+```bash
+npm run dev
+```
+
+Open http://localhost:3000. The site has no database, authentication or required environment variables.
+
+## Project Structure
+
+| Path | Purpose |
+|------|---------|
+| `content/projects.ts` | All project data (name, description, status, tags, tech, links) |
+| `components/` | UI components, e.g. the project browser (filters, search, cards) |
+| `app/` | App Router pages, layout and global styles (`globals.css`) |
+| `lib/` | Shared helpers |
+| `public/brand/` | fBit logos and avatar |
+| `public/projects/` | Project screenshots |
+
+## Development Workflow
+
+### Branching Strategy
+
+- **main** - Production-ready code
+- **feature/\*** - New features, branched from `main`
+- **fix/\*** - Bug fixes, branched from `main`
+- **docs/\*** - Documentation updates
+
+### Making Changes
+
+1. Create a branch from `main`:
+```bash
+git checkout main
+git pull origin main
+git checkout -b feature/your-feature-name
+```
+
+2. Make your changes and commit:
+```bash
+git add .
+git commit -m "feat: description of changes"
+```
+
+3. Push and open a Pull Request to `main`:
+```bash
+git push origin feature/your-feature-name
+```
+
+### Commit Message Format
+
+Follow conventional commits:
+- `feat:` - New feature
+- `fix:` - Bug fix
+- `docs:` - Documentation
+- `style:` - Formatting or styling only
+- `refactor:` - Code refactoring
+- `perf:` - Performance improvements
+- `chore:` - Build tasks, dependencies, etc.
+
+Example: `feat: add technology chips to project cards`
+
+## Code Standards
+
+- **Language:** TypeScript
+- **Framework:** Next.js 15 with the App Router and React 19
+- **Styling:** Custom CSS in `app/globals.css` (no Tailwind)
+- **Icons:** `lucide-react`
+
+### Adding or Updating a Project
+
+Edit `content/projects.ts`. Every project needs:
+
+- `name`, `slug` (unique), `category`, `description`
+- `status` - one of `Live`, `In development`, `Alpha Testing`, `Beta Testing`, `Private Preview`, `Details coming soon`
+- `tags` and `tech` (the "Built with" chips)
+- `href` (optional) - live site or GitHub repository
+
+If you add a new `status` value, add a matching style in `globals.css`, because status classes are derived from the lowercased status with spaces replaced by `-`.
+
+Keep descriptions factual. Do not claim features that are not confirmed.
+
+## Testing
+
+There is no automated test suite or linter. Before opening a PR:
+
+- [ ] `npm run build` succeeds (it also type-checks)
+- [ ] No console errors or warnings in `npm run dev`
+- [ ] Category filters and search work
+- [ ] Mobile and desktop layouts verified
+- [ ] External links open the correct URL
+
+```bash
+# Type-check and build the production bundle
+npm run build
+
+# Serve the production build locally
+npm run start
+```
+
+## Deployment
+
+Build the site with `npm run build` and host it on any Next.js-capable platform. Configure the production domain in `app/layout.tsx` (`metadataBase`) before publishing.
+
+## Troubleshooting
+
+### Build Fails
+
+1. Check the Node version: `node --version` (should be 20.9+)
+2. Clear the cache and reinstall:
+```bash
+rm -rf .next node_modules && npm install
+```
+3. Check the `npm run build` output for type errors
+
+### Styling Looks Broken
+
+1. Stop the dev server, delete `.next`, and start it again
+2. Check `app/globals.css` for unbalanced braces after edits
+3. Verify that a new `status` value has a matching CSS rule
+
+## Performance
+
+- Use the Next.js `Image` component for images
+- Optimise screenshots before adding them to `public/projects/`
+
+## Security
+
+- Never commit `.env*` files (ignored in `.gitignore`)
+- Do not publish private repository URLs or credentials in `content/projects.ts`
+- Add a privacy page before adding analytics or forms that collect personal data
+
+## Additional Resources
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Lucide Icons](https://lucide.dev)
+
+## Questions or Issues?
+
+Create an issue in the repository.

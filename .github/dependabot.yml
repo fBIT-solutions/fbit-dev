@@ -1,0 +1,80 @@
+version: 2
+updates:
+  # NPM packages
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      # time: "03:00"  # Run at 3 AM UTC
+      # timezone: "UTC"
+    
+    # Grouping: Reduce PR noise by grouping updates
+    groups:
+      framework-updates:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+      prod-dependencies:
+        dependency-type: "production"
+        patterns:
+          - "*"
+      dev-dependencies:
+        dependency-type: "development"
+        patterns:
+          - "*"
+    
+    # Auto-merge minor and patch updates
+    # auto-merge:
+    #   type: "squash"
+    #   min-age: "0 days"
+    #   update-types:
+    #     - "minor"
+    #     - "patch"
+    
+    # PR customization
+    pull-request-branch-name:
+      separator: "/"
+    commit-message:
+      prefix: "chore(deps):"
+      prefix-development: "chore(deps-dev):"
+      include: "scope"
+    
+    # Labels and assignees
+    labels:
+      - "dependencies"
+      - "npm"
+    
+    # Limits
+    open-pull-requests-limit: 5
+    
+    # Allow updates
+    allow:
+      - dependency-type: "all"
+    
+    # Ignore specific packages (optional)
+    ignore:
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-dom"
+        update-types: ["version-update:semver-major"]
+    
+    # Rebase strategy
+    # rebase-strategy: "auto"
+    
+    # Require status checks
+    # (only if you have CI/CD)
+    # required-status-checks:
+    #   - "build"
+    #   - "lint"
+
+  # GitHub Actions (optional but recommended)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "github-actions"
