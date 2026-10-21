@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowDown, ArrowRight, ArrowUpRight, Github, Heart, Leaf, Menu, MoveUpRight, Sparkles, Terminal } from 'lucide-react';
+import { ArrowDown, ArrowRight, ArrowUpRight, Heart, Leaf, Menu, MoveUpRight, Sparkles, Terminal } from 'lucide-react';
+import { FaGithub as Github } from 'react-icons/fa';
 import ProjectBrowser from '@/components/project-browser';
 import { projects } from '@/content/projects';
 
